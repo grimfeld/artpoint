@@ -2,7 +2,8 @@ import { GetServerSideProps, NextPage } from 'next'
 import { Artist, Artwork } from 'types'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch('http://localhost:3000/data.json')
+  if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error('Missing BASE_URL')
+  const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + 'data.json')
   const data = await res.json()
   const artist = data.artists.find((artist: Artist) => artist.id === context.query.id)
   const artwork = artist.artworks.find((artwork: Artwork) => artwork.id === context.query.artwork)

@@ -9,7 +9,8 @@ interface PageProps {
 }
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
-  const res = await fetch('http://localhost:3000/data.json')
+  if (!process.env.NEXT_PUBLIC_BASE_URL) throw new Error('Missing BASE_URL')
+  const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + 'data.json')
   const { title, text, artists } = await res.json()
   return {
     props: {
